@@ -20,6 +20,8 @@ may move. Also contains fill style and border defaults*/
 	this.physics = physics;
 	this.collided = false;
 	this.doomed = false;
+	this.mathValue = 0
+	this.mathString = ''
 }
 
 Shape.prototype.move = function(time, gameCanvas) {
@@ -139,20 +141,6 @@ Rectangle.prototype.applyAccel = function(time) {
 	this.yVelocity *= this.physics.surfaceFric;
 
 }
-/*
-Rectangle.prototype.checkCollision = function(shape) {
-	
-	if (shape instanceof Rectangle) {
-		//implement rect collision
-		return !(Math.max(this.x, shape.x) - Math.min(this.x, shape.x) > (this.width / 2) + (shape.width / 2) || 
-		Math.max(this.y, shape.y) - Math.min(this.y, shape.y) > (this.height / 2) + (shape.height / 2));
-		
-	}	
-	if (shape instanceof Circle) {
-	}
-	return false;
-}
-*/
 Rectangle.prototype.borderAdjust = function(gameCanvas) {
 /*
 runs interactions with the border of the playing area for rectangles.
@@ -320,16 +308,7 @@ Circle.prototype.applyAccel = function(time) {
 	this.xVelocity += this.xAccel * time;
 	this.yVelocity += this.yAccel * time;
 }
-/*
-Circle.prototype.checkCollision = function(shape) {
-	if (shape instanceof Circle) {
-		var distance = Math.pow(this.x - shape.x, 2) + Math.pow(this.y - shape.y, 2);
-		var distance = Math.sqrt(distance);
-		return distance < this.radius + shape.radius;
-	}	
-	return false;
-}
-*/
+
 Circle.prototype.borderAdjust = function(gameCanvas) {
 /*
 runs interactions with the border of the playing area for circles.
