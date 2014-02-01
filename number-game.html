@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- loads jquery 1.10.2 from the CDN -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+<!-- if the CDN is unaccessible for some reason, load the local copy -->
+<script>
+if (typeof jQuery == 'undefined') {
+    document.write(unescape("%3Cscript src='jquery-1.10.2.js' type='text/javascript'%3E%3C/script%3E"));
+}
+</script>
+<!-- load scripts and styles -->
+<script type="text/javascript" src="shapes.js"></script>
+<script type="text/javascript" src="physics.js"></script>
+<script type="text/javascript" src="player.js"></script>
+<!-- Import vector math library. Thanks to Tudor Nita at www.cgrats.com -->
+<script type="text/javascript" src="TS_vector2.js"></script>
+
+<title>Number Smasher</title>
+</head>
+
+<body>
+<div id="app">
+<div id="headSection">
+<h1 id="mainHead">Canvas Box Game</h1>
+</div>
+<canvas id="canvasEl" width=0 height=0>Canvas did not render. Please upgrade your browser.</canvas>
+
+</div>
+<script>
+//creates frame request callback based on browser
+(function() {
+    var lastTime = 0;
+    var vendors = ['webkit', 'moz'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame =
+          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
+var gameCanvas = document.getElementById("canvasEl");
+var ctext = gameCanvas.getContext("2d");
+var startTime = (new Date()).getTime();
+
+var keys = []; //stores keypresses
+var shapeArray = []; //objects in shapeArray are drawn in animation.js
+
+//registers keypresses as true for elements corresponding to keycodes
+document.body.addEventListener("keydown", function(e) {keys[e.keyCode] = true;});
+document.body.addEventListener("keyup", function(e) {keys[e.keyCode] = false;});
+</script>
+</body>
+</html>
