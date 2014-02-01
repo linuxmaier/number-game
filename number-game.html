@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- specified character encoding -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 <!-- loads jquery 1.10.2 from the CDN -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
 <!-- if the CDN is unaccessible for some reason, load the local copy -->
@@ -27,6 +29,7 @@ if (typeof jQuery == 'undefined') {
 <canvas id="canvasEl" width=0 height=0>Canvas did not render. Please upgrade your browser.</canvas>
 
 </div>
+</body>
 <script>
 //creates frame request callback based on browser
 (function() {
@@ -54,6 +57,15 @@ if (typeof jQuery == 'undefined') {
         };
 }());
 
+//resizes canvas to fit screen on load and resize
+$(window).on('load resize', function(e){
+	$('body').width($(window).width() - $('body').offset().left * 2);
+	$('body').height($(window).height() - $('body').offset().top * 2);
+
+	gameCanvas.width = Math.min($('body').width() - gameCanvas.offsetLeft * 2, 1200);
+	gameCanvas.height = Math.min($('body').height() - gameCanvas.offsetTop * 2, 700);
+});
+
 var gameCanvas = document.getElementById("canvasEl");
 var ctext = gameCanvas.getContext("2d");
 var startTime = (new Date()).getTime();
@@ -65,5 +77,4 @@ var shapeArray = []; //objects in shapeArray are drawn in animation.js
 document.body.addEventListener("keydown", function(e) {keys[e.keyCode] = true;});
 document.body.addEventListener("keyup", function(e) {keys[e.keyCode] = false;});
 </script>
-</body>
 </html>
