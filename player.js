@@ -12,7 +12,7 @@ function newNumbers(array, gameCanvas, physics) {
 	var takenNumbers = [];
 	var playerShape = null;
 
-	for (var i = 0; i < array.length; i++;) {
+	for (var i = 0; i < array.length; i++) {
 
 		var shape = array[i];
 		var numTaken = true;
