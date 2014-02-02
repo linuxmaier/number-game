@@ -35,9 +35,9 @@ Shape.prototype.move = function(time, gameCanvas) {
 	if (!((this.xVelocity == 0) && (this.yVelocity == 0))) {
 
 		var linearSpeed = Math.sqrt((this.xVelocity*this.xVelocity) + (this.yVelocity*this.yVelocity));	
-		if (linearSpeed >= this.physics.maxSpeed) {
-			this.xVelocity /= (linearSpeed / this.physics.maxSpeed);
-			this.yVelocity /= (linearSpeed / this.physics.maxSpeed);
+		if (linearSpeed >= this.maxSpeed) {
+			this.xVelocity /= (linearSpeed / this.maxSpeed);
+			this.yVelocity /= (linearSpeed / this.maxSpeed);
 		}
 	}
 
@@ -109,6 +109,7 @@ function Rectangle(xloc, yloc, width, height, fillStyle, physics, keys, keymap, 
 	this.u = keymap[1];
 	this.r = keymap[2];
 	this.d = keymap[3];
+	this.maxSpeed = physics.globalMaxSpeed;
 }
 
 Rectangle.prototype = Object.create(Shape.prototype);
@@ -126,6 +127,11 @@ Rectangle.prototype.draw = function(ctext) {
 	ctext.lineWidth = this.borderWidth;
 	ctext.strokeStyle = "black";
 	ctext.stroke();
+
+	ctext.font = '14pt Calibri';
+	ctext.textAlign = 'center';
+	ctext.fillStyle = 'black';
+	ctext.fillText(this.mathString, this.x, this.y);
 }
 
 
@@ -278,8 +284,8 @@ Inherits from Shape
 function Circle(canvas, physics) {
 	var xloc = Math.floor(Math.random() * canvas.width);
 	var yloc = Math.floor(Math.random() * canvas.height);
-	var radius = Math.ceil(Math.random() * 6) * 10;
-	var fillStyle = getGrey(radius, 70);
+	var radius = 35;
+	var fillStyle = '#DDDDDD';
 
 	Shape.call(this, xloc, yloc, fillStyle, physics);
 	this.radius = radius;
@@ -287,7 +293,7 @@ function Circle(canvas, physics) {
 	this.timer = false;
 	this.xAccel = 0;
 	this.yAccel = 0;
-	this.doomMe();
+	this.maxSpeed = physics.circMaxSpeed;
 }
 
 Circle.prototype = Object.create(Shape.prototype);
@@ -305,6 +311,12 @@ Circle.prototype.draw = function(ctext) {
 	ctext.lineWidth = this.borderWidth;
 	ctext.strokeStyle = "black";
 	ctext.stroke();
+
+	ctext.font = '12pt Calibri';
+	ctext.textAlign = 'center';
+	ctext.fillStyle = 'black';
+	ctext.fillText(this.mathString, this.x, this.y);
+	
 }
 
 Circle.prototype.applyAccel = function(time) {

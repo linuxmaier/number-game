@@ -28,11 +28,12 @@ function newNumbers(array, gameCanvas, physics) {
 			if (takenNumbers.indexOf(randNum) < 0) {
 
 				numTaken = false;
-				shape.mathValue = randNum;
+				shape.mathValue = randNum
 				shape.mathString = randNum.toString();
+				takenNumbers.push(randNum);
 			}
 
-			//failsafe if all values are taken
+/*			//failsafe if all values are taken
 			if (takenNumbers.length >= shape.physics.maxVal) {
 
 				//shape is removed if there are more taken numbers
@@ -40,6 +41,7 @@ function newNumbers(array, gameCanvas, physics) {
 				shape.doomed = true;
 				numTaken = false;
 			}
+*/
 		}
 
 		if (shape.doomed) {
@@ -51,7 +53,7 @@ function newNumbers(array, gameCanvas, physics) {
                 }
 	}
 
-	playerShape.player.target = array[Math.floor(Math.random() * array.length)];
+	playerShape.player.target = array[Math.floor(Math.random() * (array.length - 1)) + 1];
 	playerShape.mathValue = playerShape.player.target.mathValue;
 	
 	var op1

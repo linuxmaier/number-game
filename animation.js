@@ -1,5 +1,5 @@
 function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, physics) {
-	var time = ((new Date()).getTime() - lastFrame); //miliseconds since last frame
+	var time = ((new Date()).getTime() - lastFrame) / 10000000000000; //miliseconds since last frame
 	var cycleNumbers = false;
 
 	//requests next frame right away, in case polyfill is used
@@ -9,7 +9,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	for (var g = 0; g < confirmedCollisions.length; g++) {
 
 		var collision = confirmedCollisions[g];
-		if !(collision[0].targets(collision[1]) || collision[1].targets(collision[0])) {
+		if (!(collision[0].targets(collision[1]) || collision[1].targets(collision[0]))) {
 
 			//implement collision reaction.
 		}
@@ -36,8 +36,11 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	}
 	
 	if (cycleNumbers) {
-		newNumbers(shapeArray, gameCanvas, physics);
+		newNumbers(shapeArray, canvas, physics);
 	}
+
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	confirmedCollisions.length = 0;
 
 	//accelerates shapes, moves them, checks for collisions to resolve next frame, then draws
 	//shapes
@@ -46,7 +49,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		var shape = shapeArray[i];
 
 		shape.applyAccel(time);
-		shape.move(time, gameCanvas);
+		shape.move(time, canvas);
 
 		//check for collisions
 		for (var j = i + 1; j < shapeArray.length; j++) {

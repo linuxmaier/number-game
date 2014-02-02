@@ -48,6 +48,7 @@ if (!Array.prototype.indexOf) {
 <script type="text/javascript" src="shapes.js"></script>
 <script type="text/javascript" src="physics.js"></script>
 <script type="text/javascript" src="player.js"></script>
+<script type="text/javascript" src="animation.js"></script>
 <!-- Import vector math library. Thanks to Tudor Nita at www.cgrats.com -->
 <script type="text/javascript" src="TS_vector2.js"></script>
 
@@ -102,13 +103,26 @@ $(window).on('load resize', function(e){
 var gameCanvas = document.getElementById("canvasEl");
 var ctext = gameCanvas.getContext("2d");
 var startTime = (new Date()).getTime();
-
 var keys = []; //stores keypresses
 var shapeArray = []; //objects in shapeArray are drawn in animation.js
+var collisions = []; //empty collisions array
 
 //registers keypresses as true for elements corresponding to keycodes
 document.body.addEventListener("keydown", function(e) {keys[e.keyCode] = true;});
 document.body.addEventListener("keyup", function(e) {keys[e.keyCode] = false;});
+
+p1shapeInfo = new shapeInfo(gameCanvas.width / 2 - 50, gameCanvas.height, 100, 50, "#FFFFFF", [37, 38, 39, 40]);
+player1 = new Player("Player 1", p1shapeInfo, gamePhysics, keys);
+
+shapeArray.push(player1.shape);
+for (var i = 0; i < gamePhysics.circsPresent; i++) {
+
+	shapeArray.push(new Circle(gameCanvas, gamePhysics));
+}
+
+newNumbers(shapeArray, gameCanvas, gamePhysics);
+
+requestAnimationFrame(function() {animate(shapeArray, ctext, gameCanvas, collisions, startTime, gamePhysics)});
 
 </script>
 </html>

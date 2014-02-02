@@ -8,7 +8,9 @@ var gamePhysics = {
 	//rate of increase for moving shapes
 	acceleration: 25,
 	//top limit on speed for objects to move
-	maxSpeed: 50,
+	globalMaxSpeed: 50,
+	//top limit for circles
+	circMaxSpeed: 30,
 	//energy absorbtion by walls
 	eAbsorb: -.75,
 	//time until random accel choice in milliseconds
