@@ -28,13 +28,15 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 				var targetShape = collision[0];
 			}
 
-			targetShape.doomMe();
+			targetShape.doomed = true;
 			playerShape.player.score += 5;
+
 			cycleNumbers = true;
 		}
-
-		
-			
+	}
+	
+	if (cycleNumbers) {
+		newNumbers(shapeArray, gameCanvas, physics);
 	}
 
 	//accelerates shapes, moves them, checks for collisions to resolve next frame, then draws
@@ -42,6 +44,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	for (var i = 0; i < shapeArray.length; i++) {
 
 		var shape = shapeArray[i];
+
 		shape.applyAccel(time);
 		shape.move(time, gameCanvas);
 
@@ -57,3 +60,4 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		shape.draw(ctext);
 
 	}
+}

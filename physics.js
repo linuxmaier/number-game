@@ -14,7 +14,9 @@ var gamePhysics = {
 	//time until random accel choice in milliseconds
 	randAccel: 250,
 	//min time until circles self destruct
-	killTimer: 10000
+	killTimer: 10000,
+	//max value a shape's math value can take
+	maxVal: 20
 };
 
 
