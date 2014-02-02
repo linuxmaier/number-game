@@ -2,8 +2,8 @@ function Player(name, shapeinfo, physics, keys, number) {
 	this.score = 0;
 	this.name = name;
 	this.shape = new Rectangle(shapeinfo.x, shapeinfo.y, shapeinfo.width, shapeinfo.height, shapeinfo.fillStyle, physics, keys, shapeinfo.keymap, this);
-	this.fricDebuff = 1;
-	this.acceDebuff = 1;
+	this.target = null;
+
 }
 
 Player.debuff = new function(type) {

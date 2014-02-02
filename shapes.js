@@ -73,6 +73,19 @@ Shape.prototype.checkCollision = function(other) {
 	}
 	return true;		
 }
+
+Shape.prototype.targets = function(collidedShape) {
+
+	if (this.player) {
+
+		return (collidedShape === this.player.target);
+	}
+	
+	else {
+
+		return false;
+	}
+}
 /*
 
 Rectangle is the main game object. It needs to be controllable 
