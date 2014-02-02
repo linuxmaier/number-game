@@ -36,7 +36,24 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	}
 	
 	if (cycleNumbers) {
-		newNumbers(shapeArray, canvas, physics);
+
+		//assigns new numbers, picks a target and returns the player shape
+		var playerShape = newNumbers(shapeArray, canvas, physics);
+	
+		for (var h = 0; h < shapeArray.length; h++) {
+
+			var reactor = shapeArray[h];
+			if (!(reactor.player)) {
+
+				var centVec = new Vec2(reactor.x - playerShape.x, reactor.y - playerShape.y);
+				var reactVec = centVec;
+				reactVec.normalize();
+				reactVec = reactVec.mulS(reactor.maxSpeed);
+				reactor.xAccel = reactVec.x;
+				reactor.yAccel = reactVec.y;
+				console.info("reaction happened?");
+			}
+		}
 	}
 
 	context.clearRect(0, 0, canvas.width, canvas.height);

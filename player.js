@@ -76,6 +76,7 @@ function newNumbers(array, gameCanvas, physics) {
 	}
 
 	playerShape.mathString = '' + op1  + operator  + op2 + ' =';
+	return playerShape;
 }
 
 function shapeInfo (x, y, width, height, color, keymap) {
