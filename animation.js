@@ -47,6 +47,10 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	for (var i = 0; i < shapeArray.length; i++) {
 
 		var shape = shapeArray[i];
+		if (shape.player) {
+
+			var playerShape = shape;
+		}
 
 		shape.applyAccel(time);
 		shape.move(time, canvas);
@@ -63,4 +67,10 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		shape.draw(ctext);
 
 	}
+
+	scoreString = "Score: " + playerShape.player.score;
+	ctext.font = "12pt Calibri";
+	ctext.textAlign = "left";
+	ctext.fillStyle = "black";
+	ctext.fillText(scoreString, 10, gameCanvas.height - 10);
 }
