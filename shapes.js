@@ -58,6 +58,8 @@ Shape.prototype.checkCollision = function(other) {
 	var projLengthA = 0;
 	var projLengthB = 0;
 	var centVec;
+	var deepestPen = 0;
+	var deepestAxis;
 
 	for (var i = 0; i < axes.length; i++) {
 		var axis = axes[i];
@@ -85,6 +87,16 @@ Shape.prototype.targets = function(collidedShape) {
 
 		return false;
 	}
+}
+
+Shape.prototype.collisionBounce = function(colliderVec) {
+
+	
+}
+
+Shape.prototype.getVelVec = function() {
+
+	return new Vec2(this.xVelocity, this.yVelocity);
 }
 /*
 
