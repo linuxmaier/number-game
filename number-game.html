@@ -113,7 +113,7 @@ document.body.addEventListener("keyup", function(e) {keys[e.keyCode] = false;});
 //resizes app area before shape creation
 resizeGame();
 //resizes canvas to fit screen on load and resize
-$(window).on('load resize', resizeGame());
+$(window).on('load resize', resizeGame);
 
 p1shapeInfo = new shapeInfo(gameCanvas.width / 2 - 50, gameCanvas.height, 100, 50, "#FFFFFF", [37, 38, 39, 40]);
 player1 = new Player("Player 1", p1shapeInfo, gamePhysics, keys);
