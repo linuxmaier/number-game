@@ -91,14 +91,13 @@ if (!Array.prototype.indexOf) {
         };
 }());
 
-//resizes canvas to fit screen on load and resize
-$(window).on('load resize', function(e){
+resizeGame = function() {	
 	$('body').width($(window).width() - $('body').offset().left * 2);
 	$('body').height($(window).height() - $('body').offset().top * 2);
 
 	gameCanvas.width = Math.min($('body').width() - gameCanvas.offsetLeft * 2, 1200);
 	gameCanvas.height = Math.min($('body').height() - gameCanvas.offsetTop * 2, 700);
-});
+}
 
 var gameCanvas = document.getElementById("canvasEl");
 var ctext = gameCanvas.getContext("2d");
@@ -110,6 +109,10 @@ var collisions = []; //empty collisions array
 //registers keypresses as true for elements corresponding to keycodes
 document.body.addEventListener("keydown", function(e) {keys[e.keyCode] = true;});
 document.body.addEventListener("keyup", function(e) {keys[e.keyCode] = false;});
+//resizes app area before shape creation
+resizeGame();
+//resizes canvas to fit screen on load and resize
+$(window).on('load resize', resizeGame);
 
 p1shapeInfo = new shapeInfo(gameCanvas.width / 2 - 50, gameCanvas.height, 100, 50, "#FFFFFF", [37, 38, 39, 40]);
 player1 = new Player("Player 1", p1shapeInfo, gamePhysics, keys);

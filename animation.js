@@ -8,10 +8,19 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	//resolves collisions from last frame
 	for (var g = 0; g < confirmedCollisions.length; g++) {
 
-		var collision = confirmedCollisions[g];
+/*		var collision = confirmedCollisions[g];
 		if (!(collision[0].targets(collision[1]) || collision[1].targets(collision[0]))) {
 
-		}
+			var shape1 = collision[0];
+			var shape2 = collision[1];
+
+			var collisionNormal = shape1.getNormal(shape2);
+			collisionNormal = collisionNormal.abs();
+			var shape1Vel = shape1.getVelVec();
+			var shape2Vel = shape2.getVelVec();
+
+			
+		}*/
 
 /*		else {
 
