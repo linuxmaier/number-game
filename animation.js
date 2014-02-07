@@ -11,7 +11,15 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		var collision = confirmedCollisions[g];
 		if (!(collision[0].targets(collision[1]) || collision[1].targets(collision[0]))) {
 
-			//implement collision reaction.
+			var shape0Vel = collision[0].getVelVec();
+			var shape1Vel = collision[1].getVelVec();
+
+			var normalVector = collision[0].getNormal(collision[1]);
+			if (!normalVector) {
+				normalVector = collision[1].getNormal(collision[0]);
+			}
+			collision[0].collisionReact(normalVector, shape1Vel);
+			collision[1].collisionReact(normalVector, shape0Vel);
 		}
 
 		else {

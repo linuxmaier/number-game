@@ -99,7 +99,6 @@ Shape.prototype.collisionReact = function(normal, otherVec) {
 	var newVelVec = thisVely.addV(energyTransVec);
 	this.xVelocity = newVelVec.x;
 	this.yVelocity = newVelVec.y;
-	
 }
 
 Shape.prototype.getVelVec = function() {
@@ -237,6 +236,23 @@ Rectangle.prototype.getAxes = function(shape) {
 
 	return rectAxes;
 
+}
+
+Rectangle.prototype.getNormal = function(shape) {
+
+	var normal;
+	var region = this.getRegion(shape);
+	if (region % 2 == 1) {
+
+		cornerNum = Math.ceil(region / 2) % 2;
+		normal = new Vec2(this.cnr[cornerNum].x - this.cnr[cornerNum + 1].x,
+				  this.cnr[cornerNum].y - this.cnr[cornerNum + 1].y);
+	}
+	else {
+	
+		normal = new Vec2(this.cnr[region/2].x - shape.x, this.cnr[region/2].y - shape.y);
+	}
+	return normal.normalize();
 }
 
 Rectangle.prototype.getRegion = function(shape) {
@@ -407,6 +423,31 @@ Circle.prototype.getAxes = function(shape) {
 		circVec.normalize();	
 	}
 	return [circVec];
+}
+
+Circle.prototype.getNormal = function(shape) {
+	var normalVec;
+	
+	if (shape instanceof Circle) {
+
+		normalVec = new Vec2(this.x - shape.x, this.y - shape.y);
+		if (!(normalVec.x == 0 && normalVec.y ==0)) {
+
+			normalVec.normalize();
+		}
+		return normalVec;
+	}
+	region = shape.getRegion(this);
+	if (region % 2 != 0) {
+
+		return null;
+	}
+	normalVec = new Vec2(shape.cnr[region/2].x - this.x, shape.cnr[region/2].y - this.y);
+	if (!(normalVec.x == 0 && normalVec.y == 0)) {
+
+		normalVec.normalize();
+	}
+	return normalVec;	
 }
 
 Circle.prototype.getProj = function(axis, shape) {
