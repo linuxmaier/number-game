@@ -11,11 +11,9 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		var collision = confirmedCollisions[g];
 		if (!(collision[0].targets(collision[1]) || collision[1].targets(collision[0]))) {
 
-			shape1 = collision[0];
-			shape2 = collision[1];
 		}
 
-		else {
+/*		else {
 
 			if (collision[0].player) {
 
@@ -33,7 +31,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 			playerShape.player.score += 5;
 
 			cycleNumbers = true;
-		}
+		}*/
 	}
 	
 	if (cycleNumbers) {
@@ -79,6 +77,39 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 			if (!(shape === shapeArray[j]) && shape.checkCollision(shapeArray[j])) {
 
 				confirmedCollisions.push([shape, shapeArray[j]]);
+				
+				var shape1 = shape;
+				var shape2 = shapeArray[j];
+
+				var collisionNormal = shape1.getNormal(shape2);
+				collisionNormal = collisionNormal.abs();
+				var shape1Proj = shape1.getProj(collisionNormal, shape2);
+				var shape2Proj = shape2.getProj(collisionNormal, shape1);
+				var centersVec = new Vec2(shape1.x - shape2.x, shape1.y - shape2.y);
+				var centersProj = centersVec.dot(collisionNormal);
+
+				var displacement = Math.abs(shape1Proj) + Math.abs(shape2Proj) - Math.abs(centersProj);
+				var displacementVec = collisionNormal.mulS(displacement);
+				if (shape1.x <= shape2.x) {
+
+					shape1.x = shape1.x - displacementVec.x;
+					shape2.x = shape2.x + displacementVec.x;
+				}
+				else {
+			
+					shape1.x = shape1.x + displacementVec.x;
+					shape2.x = shape2.x - displacementVec.x;
+				}
+				if (shape1.y <= shape2.y) {
+
+					shape1.y = shape1.y - displacementVec.y;
+					shape2.y = shape2.y + displacementVec.y;
+				}
+				else {
+
+					shape1.y = shape1.y + displacementVec.y;
+					shape2.y = shape2.y - displacementVec.y;
+				}
 			}
 		}
 
@@ -86,9 +117,9 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 
 	}
 
-	scoreString = "Score: " + playerShape.player.score;
+/*	scoreString = "Score: " + playerShape.player.score;
 	ctext.font = "12pt Calibri";
 	ctext.textAlign = "left";
 	ctext.fillStyle = "black";
-	ctext.fillText(scoreString, 10, gameCanvas.height - 10);
+	ctext.fillText(scoreString, 10, gameCanvas.height - 10);*/
 }

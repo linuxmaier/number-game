@@ -73,6 +73,8 @@ Shape.prototype.checkCollision = function(other) {
 			return false;
 		}
 	}
+
+	
 	return true;		
 }
 
@@ -91,12 +93,13 @@ Shape.prototype.targets = function(collidedShape) {
 
 Shape.prototype.collisionReact = function(normal, otherVec) {
 
+	var normalPerp = new Vec2 (-1 * normal.x, normal.y);
 	var otherVelx = otherVec.dot(normal);
 	var thisVelVec = new Vec2 (this.xVelocity, this.yVelocity);
-	var thisVely = thisVelVec.dot(new Vec2 (-1 * normal.x, normal.y));
+	var thisVely = thisVelVec.dot(normalPerp);
 	var energyTransVec = normal.mulS(otherVelx);
 	
-	var newVelVec = thisVely.addV(energyTransVec);
+	var newVelVec = normal.mulS(thisVely).addV(energyTransVec).mulS(-1);
 	this.xVelocity = newVelVec.x;
 	this.yVelocity = newVelVec.y;
 }

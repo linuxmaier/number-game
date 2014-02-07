@@ -2,7 +2,7 @@
 
 var gamePhysics = {
 	//number of circles
-	circsPresent: 10,
+	circsPresent: 6,
 	//multiplier applie to velocity to slow movement
 	surfaceFric: .95,
 	//rate of increase for moving shapes
