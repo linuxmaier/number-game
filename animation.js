@@ -11,19 +11,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		var collision = confirmedCollisions[g];
 		if (!(collision[0].targets(collision[1]) || collision[1].targets(collision[0]))) {
 
-			var shape1 = collision[0];
-			var shape2 = collision[1];
-
-			var collisionNormal = shape1.getNormal(shape2);
-			if (!collisionNormal) {
-				var collisionNormal = shape2.getNormal(shape1);
-				console.info(collisionNormal.x + " and " + collisionNormal.y);
-			}
-			collisionNormal = collisionNormal.abs();
-			var shape1Vel = shape1.getVelVec();
-			var shape2Vel = shape2.getVelVec();
-			shape1.collisionReact(collisionNormal, shape2Vel);
-			shape2.collisionReact(collisionNormal, shape1Vel);
+			collisionReaction(collision[0], collision[1]);
 		}
 
 		else {
@@ -90,8 +78,8 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 			if (!(shape === shapeArray[j]) && shape.checkCollision(shapeArray[j])) {
 
 				confirmedCollisions.push([shape, shapeArray[j]]);
-				
-				var shape1 = shape;
+				separateShapes(shape, shapeArray[j]);
+				/*var shape1 = shape;
 				var shape2 = shapeArray[j];
 
 				var collisionNormal = shape1.getNormal(shape2);
@@ -122,7 +110,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 
 					shape1.y = shape1.y + displacementVec.y;
 					shape2.y = shape2.y - displacementVec.y;
-				}
+				}*/
 			}
 		}
 

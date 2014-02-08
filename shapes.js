@@ -5,6 +5,46 @@ function Point(x_coord, y_coord) {
 	this.y = y_coord;
 }
 
+function separateShapes(shape1, shape2) {
+
+	//separates two shapes along the shortest displacement distance
+	var collideResult = shape1.checkCollision(shape2);
+	var axis = collideResult.penAxis;
+	var disp = collideResult.pen;
+
+	var dispVec = axis.mulS(disp);
+	if (shape1.x <= shape2.x) {
+
+		shape1.x = shape1.x - dispVec.x;
+	}
+	else {
+
+		shape1.x = shape1.x + dispVec.x;
+	}
+	if (shape1.y <= shape2.y) {
+
+		shape1.y = shape1.y - dispVec.y;
+	}
+	else {
+
+		shape1.y = shape1.y + dispVec.y;
+	}
+}
+
+function collisionReaction(shape1, shape2) {
+
+	var shape1VelVec = shape1.getVelVec;
+	var shape2VelVec = shape2.getVelVec;
+	var collisionNormal = shape1.getNormal();
+	if (!collisionNormal) { 
+
+		collisionNormal = shape2.getNormal();
+	}
+	
+	shape1.collisionBounce(collisionNormal, shape2VelVec);
+	shape2.collisionBounce(collisionNormal, shape1VelVec);
+}
+
 function Shape(xloc, yloc, fillStyle, physics) {
 /*super class that contains all shapes in game. includes location
 and velocity info, since all objects will have location and some
@@ -54,12 +94,14 @@ Shape.prototype.move = function(time, gameCanvas) {
 
 
 Shape.prototype.checkCollision = function(other) {
+	//checks for collision along all axes via SAT. returns object with shortest
+	//pen axis and pen distance
 	var axes = this.getAxes(other).concat(other.getAxes(this));
 	var projLengthA = 0;
 	var projLengthB = 0;
 	var centVec;
-	var deepestPen = 0;
-	var deepestAxis;
+	var shortestPen = 0;
+	var shortestAxis = null;
 
 	for (var i = 0; i < axes.length; i++) {
 		var axis = axes[i];
@@ -72,10 +114,21 @@ Shape.prototype.checkCollision = function(other) {
 		if (projLengthA + projLengthB <= centVec) {
 			return false;
 		}
-	}
+		var displacementDist = projLengthA + projLengthB - centVec;
+		if (!shortestAxis) {
 
+			shortestAxis = axis;
+			shortestPen = displacementDist;
+		}
+		if (displacementDist < shortestPen) {
+
+			shortestAxis = axis;
+			shortestPen = displacementDist;
+		}
+	}
 	
-	return true;		
+	
+	return { penAxis: shortestAxis, pen: shortestPen };
 }
 
 Shape.prototype.targets = function(collidedShape) {
@@ -91,17 +144,17 @@ Shape.prototype.targets = function(collidedShape) {
 	}
 }
 
-Shape.prototype.collisionReact = function(normal, otherVec) {
+Shape.prototype.collisionBounce = function(normal, otherVelVec) {
 
-	var normalPerp = new Vec2 (-1 * normal.x, normal.y);
-	var otherVelx = otherVec.dot(normal);
-	var thisVelVec = new Vec2 (this.xVelocity, this.yVelocity);
-	var thisVely = thisVelVec.dot(normalPerp);
-	var energyTransVec = normal.mulS(otherVelx);
-	
-	var newVelVec = normal.mulS(thisVely).addV(energyTransVec).mulS(-1);
-	this.xVelocity = -1 * newVelVec.x;
-	this.yVelocity = -1 * newVelVec.y;
+	var normalPerp = new Vec2(-1 * normal.x, normal.y);
+	var selfVelVec = this.getVelVec();
+	var selfPerpProj = selfVelVec.dot(normalPerp);
+	var selfPerpVec = normalPerp.mulS(selfPerpProj);
+	var otherNormProj = otherVelVec.dot(normal);
+	var otherNormVec = normal.mulS(otherNormProj);
+	var newVelVec = selfPerpVec.addV(otherNormVec);
+	this.xVelocity = newVelVec.x;
+	this.yVelocity = newVelVec.y;
 }
 
 Shape.prototype.getVelVec = function() {

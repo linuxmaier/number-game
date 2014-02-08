@@ -2,15 +2,15 @@
 
 var gamePhysics = {
 	//number of circles
-	circsPresent: 2,
+	circsPresent: 5,
 	//multiplier applie to velocity to slow movement
 	surfaceFric: .95,
 	//rate of increase for moving shapes
-	acceleration: 10,
+	acceleration: 20,
 	//top limit on speed for objects to move
-	globalMaxSpeed: 20,
+	globalMaxSpeed: 50,
 	//top limit for circles
-	circMaxSpeed: 10,
+	circMaxSpeed: 30,
 	//energy absorbtion by walls
 	eAbsorb: -.75,
 	//time until random accel choice in milliseconds
