@@ -100,8 +100,8 @@ Shape.prototype.collisionReact = function(normal, otherVec) {
 	var energyTransVec = normal.mulS(otherVelx);
 	
 	var newVelVec = normal.mulS(thisVely).addV(energyTransVec).mulS(-1);
-	this.xVelocity = newVelVec.x;
-	this.yVelocity = newVelVec.y;
+	this.xVelocity = -1 * newVelVec.x;
+	this.yVelocity = -1 * newVelVec.y;
 }
 
 Shape.prototype.getVelVec = function() {
@@ -247,7 +247,7 @@ Rectangle.prototype.getNormal = function(shape) {
 	var region = this.getRegion(shape);
 	if (region % 2 == 1) {
 
-		cornerNum = Math.ceil(region / 2) % 2;
+		var cornerNum = Math.ceil(region / 2) % 2;
 		normal = new Vec2(this.cnr[cornerNum].x - this.cnr[cornerNum + 1].x,
 				  this.cnr[cornerNum].y - this.cnr[cornerNum + 1].y);
 	}
@@ -255,7 +255,8 @@ Rectangle.prototype.getNormal = function(shape) {
 	
 		normal = new Vec2(this.cnr[region/2].x - shape.x, this.cnr[region/2].y - shape.y);
 	}
-	return normal.normalize();
+	normal.normalize();
+	return normal;
 }
 
 Rectangle.prototype.getRegion = function(shape) {
@@ -264,19 +265,56 @@ Rectangle.prototype.getRegion = function(shape) {
 		if (shape.y < this.cnr[0].y) {
 			return 0;
 		}
+		if (shape.y >= this.cnr[0].y && shape.y <= this.cnr[3].y) {
+
+			return 7;
+		}
 		if (shape.y > this.cnr[3].y) {
 			return 6;
 		}
+	}
+	if (shape.x >= this.cnr[0].x && shape.x <= this.cnr[1].x) {
+
+		if (shape.y <= this.cnr[0].y) {
+
+			return 1;
+		}
+		if (shape.y >= this.cnr[3].y) {
+
+			return 5;
+		}
+		if (shape.y >= (((this.cnr[1].y - this.cnr[3].y) / (this.cnr[1].x - this.cnr[3].x)) * (shape.x - this.x) + this.y)) {
+
+			if (shape.y >= (((this.cnr[0].y - this.cnr[2].y) / (this.cnr[0].x - this.cnr[2].x)) * (shape.x - this.x) + this.y)) {
+				return 1;
+			}
+			else {
+				return 7;
+			}
+		}
+		else {
+			if (shape.y >= (((this.cnr[0].y - this.cnr[2].y) / (this.cnr[0].x - this.cnr[2].x)) * (shape.x - this.x) + this.y)) {
+
+				return 3;
+			}
+			else {
+
+				return 5;
+			}
+		} 
 	}
 	if (shape.x > this.cnr[1].x) {
 		if (shape.y < this.cnr[1].y) {
 			return 2;
 		}
+		if (shape.y >= this.cnr[1].y && shape.y <= this.cnr[2].y) {
+
+			return 3;
+		}
 		if (shape.y > this.cnr[2].y) {
 			return 4;
 		}
 	}
-	return 1;
 }
 
 Rectangle.prototype.getProj = function(axis, shape) {

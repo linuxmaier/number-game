@@ -8,21 +8,25 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 	//resolves collisions from last frame
 	for (var g = 0; g < confirmedCollisions.length; g++) {
 
-/*		var collision = confirmedCollisions[g];
+		var collision = confirmedCollisions[g];
 		if (!(collision[0].targets(collision[1]) || collision[1].targets(collision[0]))) {
 
 			var shape1 = collision[0];
 			var shape2 = collision[1];
 
 			var collisionNormal = shape1.getNormal(shape2);
+			if (!collisionNormal) {
+				var collisionNormal = shape2.getNormal(shape1);
+				console.info(collisionNormal.x + " and " + collisionNormal.y);
+			}
 			collisionNormal = collisionNormal.abs();
 			var shape1Vel = shape1.getVelVec();
 			var shape2Vel = shape2.getVelVec();
+			shape1.collisionReact(collisionNormal, shape2Vel);
+			shape2.collisionReact(collisionNormal, shape1Vel);
+		}
 
-			
-		}*/
-
-/*		else {
+		else {
 
 			if (collision[0].player) {
 
@@ -40,7 +44,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 			playerShape.player.score += 5;
 
 			cycleNumbers = true;
-		}*/
+		}
 	}
 	
 	if (cycleNumbers) {
@@ -81,7 +85,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 		shape.move(time, canvas);
 
 		//check for collisions
-		for (var j = i + 1; j < shapeArray.length; j++) {
+		for (var j = 0; j < shapeArray.length; j++) {
 
 			if (!(shape === shapeArray[j]) && shape.checkCollision(shapeArray[j])) {
 
@@ -91,7 +95,6 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 				var shape2 = shapeArray[j];
 
 				var collisionNormal = shape1.getNormal(shape2);
-				collisionNormal = collisionNormal.abs();
 				var shape1Proj = shape1.getProj(collisionNormal, shape2);
 				var shape2Proj = shape2.getProj(collisionNormal, shape1);
 				var centersVec = new Vec2(shape1.x - shape2.x, shape1.y - shape2.y);
@@ -99,6 +102,7 @@ function animate (shapeArray, context, canvas, confirmedCollisions, lastFrame, p
 
 				var displacement = Math.abs(shape1Proj) + Math.abs(shape2Proj) - Math.abs(centersProj);
 				var displacementVec = collisionNormal.mulS(displacement);
+				var displacementVec = displacementVec.divS(1);
 				if (shape1.x <= shape2.x) {
 
 					shape1.x = shape1.x - displacementVec.x;

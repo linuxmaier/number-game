@@ -117,13 +117,13 @@ $(window).on('load resize', resizeGame);
 p1shapeInfo = new shapeInfo(gameCanvas.width / 2 - 50, gameCanvas.height, 100, 50, "#FFFFFF", [37, 38, 39, 40]);
 player1 = new Player("Player 1", p1shapeInfo, gamePhysics, keys);
 
-//shapeArray.push(player1.shape);
+shapeArray.push(player1.shape);
 for (var i = 0; i < gamePhysics.circsPresent; i++) {
 
 	shapeArray.push(new Circle(gameCanvas, gamePhysics));
 }
 
-//newNumbers(shapeArray, gameCanvas, gamePhysics);
+newNumbers(shapeArray, gameCanvas, gamePhysics);
 
 requestAnimationFrame(function() {animate(shapeArray, ctext, gameCanvas, collisions, startTime, gamePhysics)});
 
